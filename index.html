@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Crimson Roast & Co. - Premium artisan coffeehouse featuring hand-roasted specialty single-origin coffees, authentic espresso creations, cold brews, ceremonial matcha, and french patisserie.">
+  <title>Crimson Roast & Co. | Artisan Coffee & Roastery</title>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+</head>
+<body>
+
+  <!-- Ambient Light & Particle Canvas -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Top Announcement Promo Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div>
+        <span class="promo-pill">FLASH OFFER</span>
+        <span>Use code <strong>CRIMSON10</strong> for 10% off your first artisan order. Free delivery over $35!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Glassmorphic Header -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="#" class="brand-logo">
+        <div class="brand-emblem">☕</div>
+        <div class="brand-name">CRIMSON <span>ROAST</span></div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#brew-lab" class="nav-link">Brew Lab</a></li>
+        <li><a href="#menu" class="nav-link">Menu & Bakery</a></li>
+        <li><a href="#roast-mastery" class="nav-link">Roast Mastery</a></li>
+        <li><a href="#reserve" class="nav-link">Reserve Table</a></li>
+      </ul>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <!-- Cafe Audio Ambiance Toggle -->
+        <button id="audio-toggle-btn" class="audio-toggle-btn" title="Toggle Cafe Binaural Ambiance">
+          <div class="audio-bars">
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+          </div>
+          <span>Ambience</span>
+        </button>
+
+        <!-- Cart Button -->
+        <button class="cart-btn" onclick="toggleCart(true)" title="View Order Basket">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-badge">0</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="alert('Menu items: Brew Lab, Signature Menu, Roast Mastery, Reserve Table')">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-glow-orb hero-glow-1"></div>
+    <div class="hero-glow-orb hero-glow-2"></div>
+    
+    <div class="container hero-grid">
+      <!-- Left Column: Punchy Headline & Value Props -->
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span>✨</span>
+          <span>ARTISAN ROASTERY & COFFEE LAB</span>
+        </div>
+        <h1 class="hero-title">
+          Crafted in Crimson, <br>
+          <span class="text-gradient">Brewed to Perfection.</span>
+        </h1>
+        <p class="hero-description">
+          Experience the pinnacle of specialty coffee. From volcanic single-origin beans roasted to meticulous profiles, to our silky microfoam lattes and cold-drip nitro brews with authentic flavor clarity.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#menu" class="btn btn-primary">
+            <span>Explore Menu</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <a href="#brew-lab" class="btn btn-secondary">
+            <span>Custom Brew Lab</span>
+            <span>⚡</span>
+          </a>
+        </div>
+
+        <!-- Metrics Row -->
+        <div class="hero-stats-row">
+          <div class="stat-item">
+            <h4>92+</h4>
+            <p>SCA Specialty Score</p>
+          </div>
+          <div class="stat-item">
+            <h4>100%</h4>
+            <p>Single Origin Ethic</p>
+          </div>
+          <div class="stat-item">
+            <h4>48h</h4>
+            <p>Fresh Roast Guarantee</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Hero Drink Showcase -->
+      <div class="hero-visual-wrapper">
+        <div class="hero-card-display">
+          <div class="hero-image-container">
+            <img id="hero-main-img" src="assets/images/hero_artisan_espresso.jpg" alt="Signature Artisan Espresso">
+            <!-- Rising Steam Animation Filter -->
+            <div class="steam-container">
+              <div class="steam-particle"></div>
+              <div class="steam-particle"></div>
+              <div class="steam-particle"></div>
+            </div>
+          </div>
+
+          <div class="hero-drink-info">
+            <div>
+              <h3 id="hero-drink-name" class="hero-drink-title">Double Artisan Espresso</h3>
+              <div id="hero-drink-notes" class="hero-flavor-notes">
+                <span>Tiger Crema</span>
+                <span>Wild Berry</span>
+                <span>Dark Cocoa</span>
+              </div>
+            </div>
+            <div id="hero-drink-price-val" class="hero-drink-price">$4.50</div>
+          </div>
+        </div>
+
+        <!-- Quick Switcher Tabs -->
+        <div class="hero-drink-selector">
+          <button class="drink-pill-btn active">Espresso</button>
+          <button class="drink-pill-btn">Velvet Latte</button>
+          <button class="drink-pill-btn">Nitro Cold</button>
+          <button class="drink-pill-btn">Matcha</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive "Crimson Brew Lab" Customizer -->
+  <section id="brew-lab" class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-heading">Interactive Drink Studio</span>
+        <h2 class="section-title">The Crimson Brew Lab</h2>
+        <p class="section-desc">Design your tailor-made cup in real-time. Watch the layers adapt instantly and customize your ideal roast, milk, and natural botanical syrups.</p>
+      </div>
+
+      <div class="brew-lab-container">
+        <!-- Cup Visualizer Area -->
+        <div class="cup-simulator-area">
+          <div class="interactive-cup-frame">
+            <div class="cup-glass-body">
+              <div id="cup-layer-syrup" class="layer-syrup"></div>
+              <div id="cup-layer-base" class="layer-base"></div>
+              <div id="cup-layer-milk" class="layer-milk"></div>
+              <div id="cup-layer-foam" class="layer-foam"></div>
+            </div>
+            <!-- Ice Cubes Overlay -->
+            <div id="ice-cubes-group" class="ice-cube-group">
+              <div class="ice-cube ice-1"></div>
+              <div class="ice-cube ice-2"></div>
+              <div class="ice-cube ice-3"></div>
+            </div>
+          </div>
+
+          <div class="cup-spec-badge">
+            <h4 id="custom-drink-title" class="cup-spec-name">Hot Double Espresso</h4>
+            <p id="custom-drink-tags" class="cup-spec-tags">Silky Oat Milk • CREMA TOPPING</p>
+          </div>
+        </div>
+
+        <!-- Customizer Controls -->
+        <div class="brew-lab-controls">
+          <!-- Step 1: Base Roast -->
+          <div>
+            <div class="control-group-title">
+              <span>1. COFFEE / TEA BASE</span>
+              <span id="label-base-pick">Signature Espresso</span>
+            </div>
+            <div class="chip-options">
+              <button class="chip-btn active" data-lab-base="espresso">Double Espresso</button>
+              <button class="chip-btn" data-lab-base="coldbrew">Nitro Cold Brew</button>
+              <button class="chip-btn" data-lab-base="matcha">Ceremonial Matcha</button>
+              <button class="chip-btn" data-lab-base="blonde">Blonde Roast</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Milk Variety -->
+          <div>
+            <div class="control-group-title">
+              <span>2. MILK PROFILE</span>
+              <span id="label-milk-pick">Silky Oat Milk</span>
+            </div>
+            <div class="chip-options">
+              <button class="chip-btn active" data-lab-milk="oat">Silky Oat Milk (+$0.75)</button>
+              <button class="chip-btn" data-lab-milk="almond">Almond Breeze (+$0.75)</button>
+              <button class="chip-btn" data-lab-milk="whole">Organic Whole Milk (+$0.50)</button>
+              <button class="chip-btn" data-lab-milk="none">Pure Black ($0.00)</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Natural Syrup -->
+          <div>
+            <div class="control-group-title">
+              <span>3. INFUSED BOTANICAL SYRUP</span>
+              <span id="label-syrup-pick">Madagascar Vanilla</span>
+            </div>
+            <div class="chip-options">
+              <button class="chip-btn active" data-lab-syrup="vanilla">Bourbon Vanilla (+$0.60)</button>
+              <button class="chip-btn" data-lab-syrup="caramel">Salted Butter Caramel (+$0.75)</button>
+              <button class="chip-btn" data-lab-syrup="berry">Wild Crimson Berry (+$0.85)</button>
+              <button class="chip-btn" data-lab-syrup="hazelnut">Toasted Hazelnut (+$0.65)</button>
+              <button class="chip-btn" data-lab-syrup="none">None</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Temperature & Top -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div>
+              <div class="control-group-title">
+                <span>4. SERVE TEMP</span>
+              </div>
+              <div class="chip-options">
+                <button class="chip-btn active" data-lab-temp="hot">🔥 Hot Steamed</button>
+                <button class="chip-btn" data-lab-temp="iced">❄️ Crystal Iced</button>
+              </div>
+            </div>
+            <div>
+              <div class="control-group-title">
+                <span>5. CROWN TOPPING</span>
+              </div>
+              <div class="chip-options">
+                <button class="chip-btn active" data-lab-topping="crema">Golden Crema</button>
+                <button class="chip-btn" data-lab-topping="cinnamon">Cinnamon</button>
+                <button class="chip-btn" data-lab-topping="cocoa">Dark Cocoa</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price & Add Action Bar -->
+          <div class="brew-summary-bar">
+            <div class="custom-price-display">
+              <h3 id="custom-drink-price">$5.85</h3>
+              <p>Custom Brew Calculation</p>
+            </div>
+            <button id="add-custom-brew-btn" class="btn btn-primary">
+              <span>Add Custom Creation</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signature Menu & Category Filters -->
+  <section id="menu" class="section-padding" style="background: rgba(15, 4, 8, 0.6);">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-heading">Handcrafted Catalog</span>
+        <h2 class="section-title">Signature Menu & Artisan Bakery</h2>
+        <p class="section-desc">Every drink and pastry is crafted to order using natural, ethically sourced ingredients with true flavor integrity.</p>
+      </div>
+
+      <!-- Controls: Category Tabs & Search Bar -->
+      <div class="menu-controls">
+        <div class="category-tabs">
+          <button class="category-tab active" data-category="all">All Items</button>
+          <button class="category-tab" data-category="hot">Hot Classics</button>
+          <button class="category-tab" data-category="cold">Cold & Nitro</button>
+          <button class="category-tab" data-category="specialty">Specialty & Teas</button>
+          <button class="category-tab" data-category="bakery">Artisan Bakery</button>
+        </div>
+
+        <div class="search-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Search coffee, tea, pastries...">
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="products-grid" class="products-grid">
+        <!-- Rendered via app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Roast Mastery & Interactive Roaster Drum -->
+  <section id="roast-mastery" class="section-padding roast-mastery-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-heading">The Science of Roasting</span>
+        <h2 class="section-title">Roast Profile Calibration</h2>
+        <p class="section-desc">Drag the drum temperature slider below to see how roasting heat transforms bean chemistry and unlocks delicate flavor compounds.</p>
+      </div>
+
+      <div class="roast-interactive-card">
+        <!-- Interactive Bean Visualizer -->
+        <div class="roast-gauge-display">
+          <div id="roast-bean-visual" class="bean-visualizer">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 17.5c-4.1 0-7.5-3.4-7.5-7.5 0-2.3 1-4.3 2.6-5.7.5 2.1 2.3 3.7 4.9 3.7 2.6 0 4.4-1.6 4.9-3.7 1.6 1.4 2.6 3.4 2.6 5.7 0 4.1-3.4 7.5-7.5 7.5z"/></svg>
+          </div>
+          <div style="font-family:var(--font-heading); font-size:2rem; font-weight:800; color:var(--crimson-light);" id="roast-temp-display">218°C</div>
+          <p style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Drum Temperature</p>
+        </div>
+
+        <!-- Interactive Slider & Sensory Profile -->
+        <div>
+          <h3 id="roast-level-title" style="font-size:1.6rem; margin-bottom:0.75rem; color:var(--text-pure);">Vienna Medium-Dark Roast</h3>
+          <p id="roast-notes-text" style="color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.7;">
+            Velvety body, caramelized molasses, dark baker’s cocoa, low acidity. Ideal for rich espresso and milk pairings.
+          </p>
+
+          <div class="roast-slider-container">
+            <input type="range" id="roast-range" class="roast-range-input" min="0" max="100" value="65">
+            <div class="roast-steps-labels">
+              <span>Light (195°C)</span>
+              <span>Medium (205°C)</span>
+              <span>Vienna (218°C)</span>
+              <span>Dark (230°C)</span>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:1rem; margin-top:2rem;">
+            <div style="flex:1; background:rgba(0,0,0,0.3); padding:0.9rem; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.06);">
+              <span style="font-size:0.75rem; color:var(--text-muted);">CARAMELIZATION</span>
+              <div id="roast-caramel-metric" style="font-weight:700; color:var(--crema-gold);">Optimal (94%)</div>
+            </div>
+            <div style="flex:1; background:rgba(0,0,0,0.3); padding:0.9rem; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.06);">
+              <span style="font-size:0.75rem; color:var(--text-muted);">ORIGIN PRESERVATION</span>
+              <div id="roast-origin-metric" style="font-weight:700; color:var(--crema-gold);">Peak Balance (75%)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Table Reservation & VIP Loyalty Club -->
+  <section id="reserve" class="section-padding">
+    <div class="container">
+      <div class="reserve-vip-grid">
+        <!-- Table Booking Form -->
+        <div class="reservation-card">
+          <span class="sub-heading">Atmospheric Dining</span>
+          <h3 style="font-size:1.8rem; margin-bottom:0.5rem;">Reserve Your Cafe Table</h3>
+          <p style="color:var(--text-secondary); font-size:0.92rem; margin-bottom:1.5rem;">Join us for an immersive tasting flight, espresso masterclass, or quiet workspace session.</p>
+
+          <form id="table-reserve-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" placeholder="e.g. Eleanor Vance" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" placeholder="eleanor@example.com" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input type="date" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Time Slot</label>
+                <select class="form-select">
+                  <option>08:00 AM (Morning Brew)</option>
+                  <option>10:30 AM (Midday Focus)</option>
+                  <option>02:00 PM (Afternoon Flight)</option>
+                  <option>05:30 PM (Evening Lounge)</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Preferred Seating Zone</label>
+                <div class="seat-pills">
+                  <div class="seat-pill active">Window Sunshine Booth</div>
+                  <div class="seat-pill">Barista Tasting Counter</div>
+                  <div class="seat-pill">Patio Garden</div>
+                  <div class="seat-pill">Velvet VIP Nook</div>
+                </div>
+              </div>
+              <div class="form-group full-width" style="margin-top:0.75rem;">
+                <button type="submit" class="btn btn-primary" style="width:100%;">
+                  <span>Confirm Table Booking</span>
+                  <span>✨</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- VIP Loyalty Club -->
+        <div class="vip-card">
+          <span class="sub-heading">Crimson Society</span>
+          <h3 style="font-size:1.8rem; margin-bottom:0.5rem;">VIP Digital Loyalty Card</h3>
+          <p style="color:var(--text-secondary); font-size:0.92rem;">Collect 6 artisan stamps with every hand-poured coffee to receive your 7th premium beverage on the house!</p>
+
+          <div class="loyalty-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.8rem; font-weight:700; color:var(--text-pure);">PASSPORT REWARD</span>
+              <span style="font-size:0.8rem; color:var(--crema-gold);"><strong id="stamp-progress-count">4</strong>/6 STAMPS</span>
+            </div>
+            
+            <div class="stamp-grid">
+              <div class="stamp-slot stamped">☕</div>
+              <div class="stamp-slot stamped">☕</div>
+              <div class="stamp-slot stamped">☕</div>
+              <div class="stamp-slot stamped">☕</div>
+              <div class="stamp-slot">☕</div>
+              <div class="stamp-slot">🎁</div>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:0.75rem;">Click empty slots above to simulate earning tasting points.</p>
+          </div>
+
+          <div style="background:rgba(217,4,41,0.08); border:1px solid var(--crimson-border); border-radius:var(--radius-md); padding:1rem;">
+            <h4 style="font-size:0.92rem; color:var(--crimson-glow); margin-bottom:0.25rem;">VIP Privilege Perks:</h4>
+            <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5;">Complimentary bean tasting samples with every roast drop, priority seating, and invitations to secret cupping nights.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide-Out Cart Drawer -->
+  <div id="cart-overlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+  <aside id="cart-drawer" class="cart-drawer">
+    <div class="cart-header">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span style="font-size:1.2rem;">🛒</span>
+        <h3 style="font-size:1.2rem; font-weight:800;">Your Artisan Order</h3>
+      </div>
+      <button class="cart-close-btn" onclick="toggleCart(false)">&times;</button>
+    </div>
+
+    <!-- Free Shipping Progress Tracker -->
+    <div style="padding:0.75rem 1.5rem; background:rgba(0,0,0,0.3); border-bottom:1px solid rgba(255,255,255,0.05);">
+      <div id="cart-shipping-msg" style="font-size:0.78rem; color:var(--crema-gold); margin-bottom:0.4rem;">Add $35.00 more for complimentary priority delivery!</div>
+      <div style="height:4px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden;">
+        <div id="cart-shipping-progress" style="height:100%; width:0%; background:linear-gradient(90deg, var(--crimson-primary), var(--crema-gold)); transition:width 0.4s ease;"></div>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div id="cart-items-container" class="cart-items-container">
+      <!-- Injected via app.js -->
+    </div>
+
+    <!-- Promo Code Form -->
+    <div style="padding:0 1.5rem;">
+      <form id="promo-form" style="display:flex; gap:0.5rem;">
+        <input type="text" id="promo-code-input" placeholder="Promo code (CRIMSON10)" class="form-input" style="padding:0.45rem 0.8rem; font-size:0.82rem; flex:1;">
+        <button type="submit" class="btn btn-secondary" style="padding:0.45rem 0.9rem; font-size:0.82rem;">Apply</button>
+      </form>
+    </div>
+
+    <!-- Footer Total & Checkout -->
+    <div class="cart-footer">
+      <div class="cart-footer-summary">
+        <div class="cart-summary-line">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="cart-summary-line">
+          <span>Estimated Tax (8%)</span>
+          <span id="cart-tax">$0.00</span>
+        </div>
+        <div class="cart-total-line">
+          <span>Total</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="checkoutOrder()" style="width:100%;">
+        <span>Place Order Now</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Quick View Modal -->
+  <div id="modal-overlay" class="modal-overlay" onclick="closeQuickView()"></div>
+  <div id="quick-view-modal" class="modal-content-box">
+    <div id="modal-quick-view-content"></div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: Brand -->
+        <div class="footer-brand">
+          <div class="brand-logo" style="margin-bottom:0.75rem;">
+            <div class="brand-emblem">☕</div>
+            <div class="brand-name">CRIMSON <span>ROAST</span></div>
+          </div>
+          <p>The sanctuary for coffee purists. Single-origin roasts, authentic culinary creations, and uncompromised precision in every pour.</p>
+        </div>
+
+        <!-- Col 2: Hours & Location -->
+        <div>
+          <h4 class="footer-heading">Roastery Hours</h4>
+          <ul class="footer-links">
+            <li class="footer-link">Mon – Fri: 06:30 AM – 08:00 PM</li>
+            <li class="footer-link">Saturday: 07:00 AM – 09:00 PM</li>
+            <li class="footer-link">Sunday: 07:30 AM – 07:00 PM</li>
+            <li class="footer-link" style="color:var(--crema-gold); margin-top:0.4rem;">📍 408 Crimson Row, Roastery Quarter</li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Navigation -->
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#hero" class="footer-link">Home</a></li>
+            <li><a href="#brew-lab" class="footer-link">Brew Customizer</a></li>
+            <li><a href="#menu" class="footer-link">Artisan Menu</a></li>
+            <li><a href="#roast-mastery" class="footer-link">Roast Profiles</a></li>
+            <li><a href="#reserve" class="footer-link">Table Reservations</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Newsletter -->
+        <div>
+          <h4 class="footer-heading">Join The Crimson Club</h4>
+          <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:0.75rem;">Receive private cupping invitations and fresh batch roast releases.</p>
+          <form id="newsletter-form" class="newsletter-form">
+            <input type="email" placeholder="Your email address..." class="newsletter-input" required>
+            <button type="submit" class="btn btn-primary" style="padding:0.65rem 1.2rem;">Join</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Crimson Roast & Co. All rights reserved. Handcrafted with passion.</div>
+        <div style="display:flex; gap:1.5rem;">
+          <a href="#" style="color:var(--text-muted); text-decoration:none;">Privacy Policy</a>
+          <a href="#" style="color:var(--text-muted); text-decoration:none;">Terms of Service</a>
+          <a href="#" style="color:var(--text-muted); text-decoration:none;">Ethical Sourcing</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
