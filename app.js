@@ -194,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupRoastSimulator();
   setupHeroDrinkSwitcher();
   setupLoyaltyCard();
+  setupScrollSpy();
 });
 
 // --- RENDER PRODUCT GRID ---
@@ -218,8 +219,8 @@ function renderProducts() {
     return;
   }
 
-  elements.productsGrid.innerHTML = filtered.map(item => `
-    <article class="product-card" data-id="${item.id}">
+  elements.productsGrid.innerHTML = filtered.map((item, idx) => `
+    <article class="product-card" data-id="${item.id}" style="animation-delay: ${idx * 0.08}s;">
       <div class="product-img-holder">
         <img src="${item.image}" alt="${item.name}" loading="lazy">
         <span class="product-badge" style="border-left: 3px solid ${item.colorBadge};">${item.roast}</span>
@@ -717,45 +718,232 @@ function setupAudioAmbiance() {
 
     if (state.audioPlaying) {
       state.audioContext.suspend();
+// --- WEB AUDIO API COFFEEHOUSE LOFI VIBE SONG ENGINE ---
+let musicInterval = null;
+let activeAudioNodes = [];
+
+function setupAudioAmbiance() {
+  if (!elements.audioToggleBtn) return;
+
+  elements.audioToggleBtn.addEventListener('click', () => {
+    if (!state.audioContext) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      state.audioContext = new AudioCtx();
+    }
+
+    if (state.audioPlaying) {
+      stopCafeMusic();
       state.audioPlaying = false;
       elements.audioToggleBtn.classList.remove('playing');
-      showToast('Ambient cafe sound muted.');
+      showToast('Ambient cafe song paused.');
     } else {
-      state.audioContext.resume();
-      generateCafeSoundscape(state.audioContext);
+      if (state.audioContext.state === 'suspended') {
+        state.audioContext.resume();
+      }
+      startCafeMusic(state.audioContext);
       state.audioPlaying = true;
       elements.audioToggleBtn.classList.add('playing');
-      showToast('Relaxing coffeehouse ambiance playing.');
+      showToast('🎵 Playing relaxing coffeehouse vibe song.');
     }
   });
 }
 
-function generateCafeSoundscape(ctx) {
-  // Synthesize a cozy warm coffee shop white/pink noise + subtle vinyl warmth
-  const bufferSize = ctx.sampleRate * 3;
-  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  let b0 = 0, b1 = 0, b2 = 0;
+function stopCafeMusic() {
+  if (musicInterval) {
+    clearInterval(musicInterval);
+    musicInterval = null;
+  }
+  activeAudioNodes.forEach(node => {
+    try {
+      if (node.stop) node.stop();
+      if (node.disconnect) node.disconnect();
+    } catch (err) {}
+  });
+  activeAudioNodes = [];
+}
 
+function startCafeMusic(ctx) {
+  stopCafeMusic();
+
+  // Master Gain & Reverb Filter
+  const masterGain = ctx.createGain();
+  masterGain.gain.setValueAtTime(0.18, ctx.currentTime);
+  masterGain.connect(ctx.destination);
+  activeAudioNodes.push(masterGain);
+
+  // 1. Vinyl Warmth & Ambient Cafe Atmosphere Layer
+  const bufferSize = ctx.sampleRate * 2;
+  const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = noiseBuffer.getChannelData(0);
   for (let i = 0; i < bufferSize; i++) {
-    const white = Math.random() * 2 - 1;
-    b0 = 0.99886 * b0 + white * 0.0555179;
-    b1 = 0.99332 * b1 + white * 0.0750759;
-    b2 = 0.96900 * b2 + white * 0.1538520;
-    data[i] = (b0 + b1 + b2) * 0.035; // Gentle warm background presence
+    const crackle = Math.random() < 0.003 ? (Math.random() * 2 - 1) * 0.4 : 0;
+    data[i] = ((Math.random() * 2 - 1) * 0.03) + crackle;
+  }
+  const vinylSource = ctx.createBufferSource();
+  vinylSource.buffer = noiseBuffer;
+  vinylSource.loop = true;
+
+  const vinylFilter = ctx.createBiquadFilter();
+  vinylFilter.type = 'lowpass';
+  vinylFilter.frequency.value = 600;
+
+  vinylSource.connect(vinylFilter);
+  vinylFilter.connect(masterGain);
+  vinylSource.start();
+  activeAudioNodes.push(vinylSource);
+
+  // 2. Chords Progression for Chill Coffee Vibe
+  // Frequencies for Cmaj9, Am9, Dm9, G13 chords
+  const chordProgression = [
+    { name: 'Cmaj9', bass: 130.81, notes: [261.63, 329.63, 392.00, 493.88, 587.33] }, // C3, C4, E4, G4, B4, D5
+    { name: 'Am9',   bass: 110.00, notes: [220.00, 261.63, 329.63, 392.00, 493.88] }, // A2, A3, C4, E4, G4, B4
+    { name: 'Dm9',   bass: 146.83, notes: [293.66, 349.23, 440.00, 523.25, 659.25] }, // D3, D4, F4, A4, C5, E5
+    { name: 'G13',   bass: 98.00,  notes: [196.00, 246.94, 329.63, 392.00, 440.00] }  // G2, G3, B3, E4, G4, A4
+  ];
+
+  let chordIndex = 0;
+  const chordDuration = 3.2; // seconds per chord (~75 BPM)
+
+  function playChord(chord, startTime) {
+    // Warm Electric Piano / Rhodes Synth
+    chord.notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = 'triangle';
+      osc2.type = 'sine';
+      osc.frequency.setValueAtTime(freq, startTime);
+      osc2.frequency.setValueAtTime(freq * 1.002, startTime); // Subtle chorus detune
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(800, startTime);
+      filter.frequency.exponentialRampToValueAtTime(350, startTime + chordDuration);
+
+      const noteVelocity = 0.08 / (idx + 1);
+      gain.gain.setValueAtTime(0.0001, startTime + idx * 0.04);
+      gain.gain.exponentialRampToValueAtTime(noteVelocity, startTime + idx * 0.04 + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + chordDuration - 0.1);
+
+      osc.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+
+      osc.start(startTime);
+      osc2.start(startTime);
+      osc.stop(startTime + chordDuration);
+      osc2.stop(startTime + chordDuration);
+    });
+
+    // Warm Low-End Bass Note
+    const bassOsc = ctx.createOscillator();
+    const bassGain = ctx.createGain();
+    const bassFilter = ctx.createBiquadFilter();
+
+    bassOsc.type = 'sine';
+    bassOsc.frequency.setValueAtTime(chord.bass, startTime);
+
+    bassFilter.type = 'lowpass';
+    bassFilter.frequency.value = 220;
+
+    bassGain.gain.setValueAtTime(0.001, startTime);
+    bassGain.gain.linearRampToValueAtTime(0.22, startTime + 0.08);
+    bassGain.gain.exponentialRampToValueAtTime(0.0001, startTime + chordDuration - 0.2);
+
+    bassOsc.connect(bassFilter);
+    bassFilter.connect(bassGain);
+    bassGain.connect(masterGain);
+
+    bassOsc.start(startTime);
+    bassOsc.stop(startTime + chordDuration);
+
+    // Sparkly Melodic Kalimba notes
+    const melodyNotes = [chord.notes[3] * 1.5, chord.notes[2] * 2, chord.notes[4]];
+    melodyNotes.forEach((mFreq, mIdx) => {
+      const mTime = startTime + 0.8 + (mIdx * 0.7);
+      const mOsc = ctx.createOscillator();
+      const mGain = ctx.createGain();
+
+      mOsc.type = 'sine';
+      mOsc.frequency.setValueAtTime(mFreq, mTime);
+
+      mGain.gain.setValueAtTime(0.0001, mTime);
+      mGain.gain.exponentialRampToValueAtTime(0.04, mTime + 0.02);
+      mGain.gain.exponentialRampToValueAtTime(0.0001, mTime + 0.9);
+
+      mOsc.connect(mGain);
+      mGain.connect(masterGain);
+
+      mOsc.start(mTime);
+      mOsc.stop(mTime + 1);
+    });
   }
 
-  const noise = ctx.createBufferSource();
-  noise.buffer = buffer;
-  noise.loop = true;
+  // Initial trigger
+  playChord(chordProgression[0], ctx.currentTime + 0.05);
 
-  const lowpass = ctx.createBiquadFilter();
-  lowpass.type = 'lowpass';
-  lowpass.frequency.value = 450;
+  // Recurring loop
+  musicInterval = setInterval(() => {
+    if (!state.audioPlaying) return;
+    chordIndex = (chordIndex + 1) % chordProgression.length;
+    playChord(chordProgression[chordIndex], ctx.currentTime + 0.05);
+  }, chordDuration * 1000);
+}
 
-  noise.connect(lowpass);
-  lowpass.connect(ctx.destination);
-  noise.start();
+// --- ACTIVE SCROLL SPY FOR DYNAMIC NAV UNDERLINE ---
+function setupScrollSpy() {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function updateActiveNav() {
+    const scrollPos = window.scrollY + 180;
+    let activeId = 'hero';
+
+    sections.forEach(sec => {
+      const top = sec.offsetTop;
+      const height = sec.offsetHeight;
+      const id = sec.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        activeId = id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === `#${activeId}`) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+
+  // Smooth scroll click handler
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
+        e.preventDefault();
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const headerOffset = 80;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      }
+    });
+  });
 }
 
 // --- AMBIENT CANVAS PARTICLES (CRIMSON AROMA MOTES) ---
