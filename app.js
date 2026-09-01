@@ -182,7 +182,9 @@ const elements = {
   roastTempDisplay: document.getElementById('roast-temp-display'),
   roastLevelTitle: document.getElementById('roast-level-title'),
   roastNotesText: document.getElementById('roast-notes-text'),
-  roastBeanVisual: document.getElementById('roast-bean-visual')
+  roastBeanVisual: document.getElementById('roast-bean-visual'),
+  mobileNavDrawer: document.getElementById('mobile-nav-drawer'),
+  mobileMenuOverlay: document.getElementById('mobile-menu-overlay')
 };
 
 // --- INITIALIZATION ---
@@ -393,6 +395,20 @@ function triggerBadgePop() {
     setTimeout(() => b.classList.remove('pop'), 400);
   });
 }
+
+// --- MOBILE NAV DRAWER OPEN / CLOSE ---
+window.toggleMobileMenu = function(open) {
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const overlay = document.getElementById('mobile-menu-overlay');
+  if (!drawer || !overlay) return;
+  if (open) {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+  } else {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+};
 
 // --- CART DRAWER OPEN / CLOSE ---
 window.toggleCart = function(open) {
@@ -706,18 +722,6 @@ function setupLoyaltyCard() {
   });
 }
 
-// --- WEB AUDIO API CAFE AMBIENCE SYNTHESIZER ---
-function setupAudioAmbiance() {
-  if (!elements.audioToggleBtn) return;
-
-  elements.audioToggleBtn.addEventListener('click', () => {
-    if (!state.audioContext) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      state.audioContext = new AudioCtx();
-    }
-
-    if (state.audioPlaying) {
-      state.audioContext.suspend();
 // --- WEB AUDIO API COFFEEHOUSE LOFI VIBE SONG ENGINE ---
 let musicInterval = null;
 let activeAudioNodes = [];
@@ -895,7 +899,7 @@ function startCafeMusic(ctx) {
 // --- ACTIVE SCROLL SPY FOR DYNAMIC NAV UNDERLINE ---
 function setupScrollSpy() {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const allNavLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
 
   function updateActiveNav() {
     const scrollPos = window.scrollY + 180;
@@ -910,7 +914,7 @@ function setupScrollSpy() {
       }
     });
 
-    navLinks.forEach(link => {
+    allNavLinks.forEach(link => {
       const href = link.getAttribute('href');
       if (href === `#${activeId}`) {
         link.classList.add('active');
@@ -924,7 +928,7 @@ function setupScrollSpy() {
   updateActiveNav();
 
   // Smooth scroll click handler
-  navLinks.forEach(link => {
+  allNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       const targetId = link.getAttribute('href');
       if (targetId && targetId.startsWith('#')) {
@@ -938,8 +942,9 @@ function setupScrollSpy() {
             top: offsetPosition,
             behavior: 'smooth'
           });
-          navLinks.forEach(l => l.classList.remove('active'));
+          allNavLinks.forEach(l => l.classList.remove('active'));
           link.classList.add('active');
+          toggleMobileMenu(false);
         }
       }
     });
@@ -1115,6 +1120,12 @@ function setupEventListeners() {
       pill.classList.add('active');
     });
   });
+
+  // Mobile Menu Toggle
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', () => toggleMobileMenu(true));
+  }
 }
 
 window.resetSearch = function() {
