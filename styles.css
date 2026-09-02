@@ -2829,7 +2829,7 @@ h6 {
 }
 
 /* ==========================================================================
-   RESPONSIVE MEDIA QUERIES FOR TABLETS & PHONES
+   RESPONSIVE MEDIA QUERIES FOR MOBILE PHONES, TABLETS & RETINA DISPLAYS
    ========================================================================== */
 @media (max-width: 1024px) {
   .hero-grid {
@@ -2861,7 +2861,7 @@ h6 {
 
   .ambience-player-card {
     grid-template-columns: 1fr;
-    padding: 2rem;
+    padding: 2.25rem 1.75rem;
   }
 
   .luxury-reserve-container {
@@ -2878,7 +2878,11 @@ h6 {
 }
 
 @media (max-width: 768px) {
-  .nav-links {
+  .nav-wrapper {
+    padding: 0.75rem 0;
+  }
+
+  .desktop-nav {
     display: none;
   }
 
@@ -2891,15 +2895,46 @@ h6 {
   }
 
   .audio-toggle-btn {
-    padding: 0.6rem 0.75rem;
+    padding: 0.55rem 0.75rem;
+    min-height: 42px;
   }
 
   .hero-title {
-    font-size: 2.6rem;
+    font-size: 2.5rem;
+    line-height: 1.15;
   }
 
   .dual-module-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .ambience-sound-layers {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .player-button-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .lounge-big-play-btn {
+    align-self: center;
+  }
+
+  .lounge-track-meta {
+    text-align: center;
+  }
+
+  .audio-volume-control {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .volume-slider {
+    width: 110px;
   }
 
   .modal-grid {
@@ -2907,8 +2942,12 @@ h6 {
   }
 
   .modal-img-holder {
-    height: 220px;
-    min-height: 220px;
+    height: 200px;
+    min-height: 200px;
+  }
+
+  .modal-details-body {
+    padding: 1.5rem;
   }
 
   .form-grid {
@@ -2917,6 +2956,7 @@ h6 {
 
   .footer-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .footer-bottom {
@@ -2927,31 +2967,86 @@ h6 {
 }
 
 @media (max-width: 480px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+  }
+
+  .top-bar-content {
+    font-size: 0.76rem;
+    line-height: 1.4;
+  }
+
+  .promo-pill {
+    font-size: 0.62rem;
+    padding: 0.15rem 0.45rem;
+  }
+
+  .brand-name {
+    font-size: 1.1rem;
+  }
+
+  .brand-emblem {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
   .hero-title {
-    font-size: 2.15rem;
+    font-size: 2.1rem;
   }
 
   .hero-actions {
     flex-direction: column;
     width: 100%;
+    gap: 0.75rem;
   }
 
   .hero-actions .btn {
     width: 100%;
+    justify-content: center;
+    padding: 0.85rem 1.5rem;
   }
 
   .hero-stats-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .stat-number {
+    font-size: 1.7rem;
   }
 
   .brew-lab-container {
-    padding: 1.25rem;
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-lg);
   }
 
   .interactive-cup-frame {
-    width: 150px;
-    height: 200px;
+    width: 140px;
+    height: 180px;
+  }
+
+  .brew-presets-row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.5rem;
+  }
+
+  .preset-pill {
+    flex-shrink: 0;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.78rem;
   }
 
   .category-tabs {
@@ -2960,10 +3055,13 @@ h6 {
     padding-bottom: 0.5rem;
     width: 100%;
     -webkit-overflow-scrolling: touch;
+    gap: 0.5rem;
   }
 
   .category-tab {
     flex-shrink: 0;
+    padding: 0.55rem 1rem;
+    font-size: 0.82rem;
   }
 
   .search-box {
@@ -2971,17 +3069,98 @@ h6 {
     min-width: unset;
   }
 
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .vinyl-record-housing {
+    width: min(200px, 65vw);
+    height: min(200px, 65vw);
+    margin-bottom: 1.25rem;
+  }
+
+  .vinyl-disc {
+    width: 100%;
+    height: 100%;
+  }
+
+  .vinyl-center-label {
+    width: 72px;
+    height: 72px;
+  }
+
+  .vinyl-title {
+    font-size: 0.55rem;
+  }
+
+  .vinyl-artist {
+    font-size: 0.48rem;
+  }
+
+  .turntable-tonearm {
+    width: 40px;
+    height: 70px;
+  }
+
+  .track-main-title {
+    font-size: 1.45rem;
+  }
+
+  .ambience-player-card {
+    padding: 1.5rem 1rem;
+    border-radius: var(--radius-lg);
+  }
+
   .seat-pills-row {
     flex-direction: column;
+    gap: 0.5rem;
   }
 
   .reservation-card {
-    padding: 1.5rem;
+    padding: 1.25rem 1rem;
+  }
+
+  .form-input,
+  .form-select,
+  .newsletter-input {
+    font-size: 16px; /* Prevents auto-zoom on iOS safari */
   }
 
   .toast-container {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+
+  .toast {
+    padding: 0.85rem 1.2rem;
+    font-size: 0.85rem;
+  }
+
+  .cart-drawer {
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .modal-content-box {
+    width: 95%;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .vinyl-record-housing {
+    width: 160px;
+    height: 160px;
   }
 }
