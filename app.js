@@ -1,10 +1,108 @@
 /**
  * CRIMSON ROAST & CO. - INTERACTIVE JAVASCRIPT ENGINE
- * Handles Live Brew Lab, Cart Drawer, Realistic Product Filters, 
- * Web Audio Cafe Soundscape, Roast Simulator, Modal Previews, and Micro-Animations.
+ * Handles Live Modern Brew Lab, Wikipedia Knowledge Encyclopedia, Cart Drawer,
+ * Table Reservation Zone Showcase, Artisan Tasting Flights, Roast Simulator,
+ * Web Audio Cafe Soundscape, and 100% Mobile Ergonomics.
  */
 
-// --- PRODUCT CATALOG (AUTHENTIC NATURAL PRODUCT PALETTES) ---
+// --- WIKIPEDIA KNOWLEDGE ENCYCLOPEDIA MAPPING ---
+const WIKIPEDIA_MAP = {
+  // Coffee Origins & Single Origins
+  'Ethiopia Yirgacheffe': 'https://en.wikipedia.org/wiki/Yirgacheffe_coffee',
+  'Colombia Huila': 'https://en.wikipedia.org/wiki/Coffee_production_in_Colombia',
+  'Guatemala Antigua': 'https://en.wikipedia.org/wiki/Coffee_production_in_Guatemala',
+  'Sumatra Mandheling': 'https://en.wikipedia.org/wiki/Coffee_production_in_Indonesia',
+  'Kenya AA': 'https://en.wikipedia.org/wiki/Coffee_production_in_Kenya',
+  'Panama Geisha': 'https://en.wikipedia.org/wiki/Geisha_(coffee)',
+  'Uji, Kyoto': 'https://en.wikipedia.org/wiki/Uji,_Kyoto',
+  'French Normandy Butter': 'https://en.wikipedia.org/wiki/Beurre_d%27Isigny',
+  '70% Valrhona Dark Cocoa': 'https://en.wikipedia.org/wiki/Valrhona',
+  'House Crimson Blend': 'https://en.wikipedia.org/wiki/Coffee_blend',
+
+  // Beverages & Brewing Styles
+  'Signature Double Espresso': 'https://en.wikipedia.org/wiki/Espresso',
+  'Espresso': 'https://en.wikipedia.org/wiki/Espresso',
+  'Velvet Barista Latte': 'https://en.wikipedia.org/wiki/Latte',
+  'Latte': 'https://en.wikipedia.org/wiki/Latte',
+  'Nitro Amber Cold Brew': 'https://en.wikipedia.org/wiki/Nitro_cold_brew',
+  'Cold Brew': 'https://en.wikipedia.org/wiki/Cold_brew_coffee',
+  'Ceremonial Matcha Latte': 'https://en.wikipedia.org/wiki/Matcha',
+  'Matcha': 'https://en.wikipedia.org/wiki/Matcha',
+  'Iced Caramel Macchiato': 'https://en.wikipedia.org/wiki/Caff%C3%A8_macchiato',
+  'Macchiato': 'https://en.wikipedia.org/wiki/Caff%C3%A8_macchiato',
+  'Artisan Chemex Pour Over': 'https://en.wikipedia.org/wiki/Chemex_Coffeemaker',
+  'Pour Over': 'https://en.wikipedia.org/wiki/Coffeemaker#Drip_brew',
+  'Chemex': 'https://en.wikipedia.org/wiki/Chemex_Coffeemaker',
+  'Artisan Butter Croissant': 'https://en.wikipedia.org/wiki/Croissant',
+  'Croissant': 'https://en.wikipedia.org/wiki/Croissant',
+  'Belgian Dark Mocha Tart': 'https://en.wikipedia.org/wiki/Caff%C3%A8_mocha',
+  'Mocha': 'https://en.wikipedia.org/wiki/Caff%C3%A8_mocha',
+
+  // Ingredients & Culinary Elements
+  'Crema': 'https://en.wikipedia.org/wiki/Caff%C3%A8_crema',
+  'Crema Rich': 'https://en.wikipedia.org/wiki/Caff%C3%A8_crema',
+  'Tiger Crema': 'https://en.wikipedia.org/wiki/Caff%C3%A8_crema',
+  'Golden Crema': 'https://en.wikipedia.org/wiki/Caff%C3%A8_crema',
+  'Microfoam': 'https://en.wikipedia.org/wiki/Microfoam',
+  'Silky Microfoam': 'https://en.wikipedia.org/wiki/Microfoam',
+  'Vanilla': 'https://en.wikipedia.org/wiki/Vanilla',
+  'Madagascar Vanilla': 'https://en.wikipedia.org/wiki/Vanilla',
+  'Bourbon Vanilla': 'https://en.wikipedia.org/wiki/Vanilla',
+  'Caramel': 'https://en.wikipedia.org/wiki/Caramel',
+  'Artisan Caramel': 'https://en.wikipedia.org/wiki/Caramel',
+  'Salted Butter Caramel': 'https://en.wikipedia.org/wiki/Caramel',
+  'Caramelized Honey': 'https://en.wikipedia.org/wiki/Honey',
+  'Cinnamon': 'https://en.wikipedia.org/wiki/Cinnamon',
+  'Cinnamon Dust': 'https://en.wikipedia.org/wiki/Cinnamon',
+  'Dark Cocoa': 'https://en.wikipedia.org/wiki/Cocoa_solids',
+  'Floral Berry': 'https://en.wikipedia.org/wiki/Berry',
+  'Wild Berry': 'https://en.wikipedia.org/wiki/Berry',
+  'Wild Crimson Raspberry': 'https://en.wikipedia.org/wiki/Raspberry',
+  'Raspberry': 'https://en.wikipedia.org/wiki/Raspberry',
+  'Hazelnut': 'https://en.wikipedia.org/wiki/Hazelnut',
+  'Roasted Hazelnut': 'https://en.wikipedia.org/wiki/Hazelnut',
+  'Toasted Hazelnut': 'https://en.wikipedia.org/wiki/Hazelnut',
+  'Praline': 'https://en.wikipedia.org/wiki/Praline',
+  'Praline Crunch': 'https://en.wikipedia.org/wiki/Praline',
+  'Fresh Mint': 'https://en.wikipedia.org/wiki/Spearmint',
+  'Jasmine': 'https://en.wikipedia.org/wiki/Jasmine',
+  'Jasmine Floral': 'https://en.wikipedia.org/wiki/Jasmine',
+  'Bergamot': 'https://en.wikipedia.org/wiki/Bergamot_orange',
+  'Bergamot Notes': 'https://en.wikipedia.org/wiki/Bergamot_orange',
+  'Oat Milk': 'https://en.wikipedia.org/wiki/Oat_milk',
+  'Silky Oat Milk': 'https://en.wikipedia.org/wiki/Oat_milk',
+  'Almond Milk': 'https://en.wikipedia.org/wiki/Almond_milk',
+  'Almond Breeze': 'https://en.wikipedia.org/wiki/Almond_milk',
+  'Whole Milk': 'https://en.wikipedia.org/wiki/Milk',
+  'Organic Milk': 'https://en.wikipedia.org/wiki/Milk',
+  'Ganache': 'https://en.wikipedia.org/wiki/Ganache',
+  'Cascading Head': 'https://en.wikipedia.org/wiki/Nitro_cold_brew',
+  'Ultra Smooth': 'https://en.wikipedia.org/wiki/Cold_brew_coffee',
+  'Low Acidity': 'https://en.wikipedia.org/wiki/Cold_brew_coffee',
+  'Authentic Jade': 'https://en.wikipedia.org/wiki/Matcha',
+  'Umami Sweet': 'https://en.wikipedia.org/wiki/Umami',
+  'Layered Perfection': 'https://en.wikipedia.org/wiki/Caff%C3%A8_macchiato',
+  'Flaky 72-Layers': 'https://en.wikipedia.org/wiki/Laminated_dough',
+  'Golden Crust': 'https://en.wikipedia.org/wiki/Baking',
+  'Powdered Dusting': 'https://en.wikipedia.org/wiki/Powdered_sugar',
+  'Rich Ganache': 'https://en.wikipedia.org/wiki/Ganache',
+  'Crystal Clean': 'https://en.wikipedia.org/wiki/Chemex_Coffeemaker',
+  'Coffee Roasting': 'https://en.wikipedia.org/wiki/Coffee_roasting'
+};
+
+function getWikipediaUrl(term) {
+  if (!term) return 'https://en.wikipedia.org/wiki/Coffee';
+  const clean = term.trim();
+  if (WIKIPEDIA_MAP[clean]) return WIKIPEDIA_MAP[clean];
+  for (const [key, url] of Object.entries(WIKIPEDIA_MAP)) {
+    if (clean.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(clean.toLowerCase())) {
+      return url;
+    }
+  }
+  return `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(clean)}`;
+}
+
+// --- PRODUCT CATALOG ---
 const PRODUCTS = [
   {
     id: 'prod-1',
@@ -146,6 +244,7 @@ const state = {
   activeHeroIndex: 0,
   promoDiscountPercent: 0,
   promoCodeApplied: null,
+  selectedZone: 'window',
   brewLab: {
     base: 'espresso',
     milk: 'oat',
@@ -153,8 +252,7 @@ const state = {
     topping: 'crema',
     temp: 'hot',
     basePrice: 4.50
-  },
-  loyaltyStamps: 4
+  }
 };
 
 // --- DOM ELEMENTS ---
@@ -195,19 +293,20 @@ document.addEventListener('DOMContentLoaded', () => {
   setupBrewLabInteractions();
   setupRoastSimulator();
   setupHeroDrinkSwitcher();
-  setupLoyaltyCard();
+  setupTableReservation();
+  setupTastingFlights();
   setupScrollSpy();
 });
 
-// --- RENDER PRODUCT GRID ---
+// --- RENDER PRODUCT GRID WITH DIRECT WIKIPEDIA LINKS ---
 function renderProducts() {
   if (!elements.productsGrid) return;
-  
+
   const filtered = PRODUCTS.filter(product => {
     const matchesCategory = state.activeCategory === 'all' || product.category === state.activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-                          product.desc.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-                          product.origin.toLowerCase().includes(state.searchQuery.toLowerCase());
+      product.desc.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+      product.origin.toLowerCase().includes(state.searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -221,39 +320,58 @@ function renderProducts() {
     return;
   }
 
-  elements.productsGrid.innerHTML = filtered.map((item, idx) => `
-    <article class="product-card" data-id="${item.id}" style="animation-delay: ${idx * 0.08}s;">
-      <div class="product-img-holder">
-        <img src="${item.image}" alt="${item.name}" loading="lazy">
-        <span class="product-badge" style="border-left: 3px solid ${item.colorBadge};">${item.roast}</span>
-        <button class="product-quick-btn" onclick="openQuickView('${item.id}')" title="Quick View">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-        </button>
-      </div>
-      <div class="product-details">
-        <div class="product-meta">
-          <span class="product-origin">${item.origin.split('&')[0]}</span>
-          <span class="product-rating">★ ${item.rating} <span style="color:var(--text-muted);font-size:0.75rem;">(${item.reviews})</span></span>
-        </div>
-        <h3 class="product-name">${item.name}</h3>
-        <p class="product-desc">${item.desc}</p>
-        <div class="product-tags">
-          ${item.tags.map(tag => `<span class="tag-pill">${tag}</span>`).join('')}
-        </div>
-        <div class="product-footer">
-          <span class="product-price">$${item.price.toFixed(2)}</span>
-          <button class="add-to-cart-btn" onclick="addToCart('${item.id}')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            Add
+  elements.productsGrid.innerHTML = filtered.map((item, idx) => {
+    const originParts = item.origin.split('&').map(s => s.trim());
+    const originLinks = originParts.map(part => `
+      <a href="${getWikipediaUrl(part)}" target="_blank" rel="noopener noreferrer" class="wiki-origin-link" title="Learn about ${part} on Wikipedia">
+        ${part} <span class="wiki-inline-icon">↗</span>
+      </a>
+    `).join(' & ');
+
+    return `
+      <article class="product-card" data-id="${item.id}" style="animation-delay: ${idx * 0.08}s;">
+        <div class="product-img-holder">
+          <img src="${item.image}" alt="${item.name}" loading="lazy">
+          <a href="${getWikipediaUrl('Coffee Roasting')}" target="_blank" rel="noopener noreferrer" class="product-badge" style="border-left: 3px solid ${item.colorBadge}; text-decoration:none;" title="Learn about roasting profiles on Wikipedia">
+            ${item.roast} ↗
+          </a>
+          <button class="product-quick-btn" onclick="openQuickView('${item.id}')" title="Quick View & Ingredients">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
           </button>
         </div>
-      </div>
-    </article>
-  `).join('');
+        <div class="product-details">
+          <div class="product-meta">
+            <span class="product-origin">${originLinks}</span>
+            <span class="product-rating">★ ${item.rating} <span style="color:var(--text-muted);font-size:0.75rem;">(${item.reviews})</span></span>
+          </div>
+          <h3 class="product-name">
+            <a href="${getWikipediaUrl(item.name)}" target="_blank" rel="noopener noreferrer" class="wiki-title-link" title="Learn about ${item.name} on Wikipedia">
+              ${item.name}
+            </a>
+          </h3>
+          <p class="product-desc">${item.desc}</p>
+          <div class="product-tags">
+            ${item.tags.map(tag => `
+              <a href="${getWikipediaUrl(tag)}" target="_blank" rel="noopener noreferrer" class="tag-pill wiki-tag" title="Click to view '${tag}' on Wikipedia">
+                ${tag} <span class="wiki-arrow">↗</span>
+              </a>
+            `).join('')}
+          </div>
+          <div class="product-footer">
+            <span class="product-price">$${item.price.toFixed(2)}</span>
+            <button class="add-to-cart-btn" onclick="addToCart('${item.id}')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
 }
 
 // --- CART STATE MANAGEMENT ---
-window.addToCart = function(productId, customItem = null) {
+window.addToCart = function (productId, customItem = null) {
   let itemToAdd;
   if (customItem) {
     itemToAdd = { ...customItem };
@@ -281,7 +399,7 @@ window.addToCart = function(productId, customItem = null) {
   showToast(`Added "${itemToAdd.name}" to your order.`);
 };
 
-window.updateQty = function(id, delta, details = '') {
+window.updateQty = function (id, delta, details = '') {
   const index = state.cart.findIndex(i => i.id === id && i.details === details);
   if (index === -1) return;
 
@@ -397,7 +515,7 @@ function triggerBadgePop() {
 }
 
 // --- MOBILE NAV DRAWER OPEN / CLOSE ---
-window.toggleMobileMenu = function(open) {
+window.toggleMobileMenu = function (open) {
   const drawer = document.getElementById('mobile-nav-drawer');
   const overlay = document.getElementById('mobile-menu-overlay');
   if (!drawer || !overlay) return;
@@ -411,7 +529,7 @@ window.toggleMobileMenu = function(open) {
 };
 
 // --- CART DRAWER OPEN / CLOSE ---
-window.toggleCart = function(open) {
+window.toggleCart = function (open) {
   if (open) {
     elements.cartDrawer.classList.add('open');
     elements.cartOverlay.classList.add('open');
@@ -421,7 +539,7 @@ window.toggleCart = function(open) {
   }
 };
 
-window.checkoutOrder = function() {
+window.checkoutOrder = function () {
   if (state.cart.length === 0) {
     showToast('Your basket is empty. Add drinks first!');
     return;
@@ -433,8 +551,8 @@ window.checkoutOrder = function() {
   updateCartUI();
 };
 
-// --- QUICK VIEW MODAL ---
-window.openQuickView = function(productId) {
+// --- QUICK VIEW MODAL WITH WIKIPEDIA EXPLORER ---
+window.openQuickView = function (productId) {
   const item = PRODUCTS.find(p => p.id === productId);
   if (!item) return;
 
@@ -448,25 +566,40 @@ window.openQuickView = function(productId) {
       </div>
       <div class="modal-details-body">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <span class="sub-heading" style="margin:0;">Origin: ${item.origin}</span>
+          <span class="sub-heading" style="margin:0;">
+            Origin: <a href="${getWikipediaUrl(item.origin)}" target="_blank" rel="noopener noreferrer" class="wiki-modal-link" style="color:var(--crema-gold); text-decoration:underline;">${item.origin} ↗</a>
+          </span>
           <button class="modal-close-btn" onclick="closeQuickView()">&times;</button>
         </div>
-        <h2 style="font-size:1.8rem; margin-bottom:0.5rem;">${item.name}</h2>
+        <h2 style="font-size:1.8rem; margin-bottom:0.5rem;">
+          <a href="${getWikipediaUrl(item.name)}" target="_blank" rel="noopener noreferrer" style="color:var(--text-pure); text-decoration:none;" title="Learn about ${item.name} on Wikipedia">
+            ${item.name} <span class="wiki-badge-pill">📖 Wikipedia</span>
+          </a>
+        </h2>
         <p style="color:var(--text-secondary); font-size:0.92rem; margin-bottom:1.25rem;">${item.desc}</p>
         
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.5rem; background:rgba(0,0,0,0.3); padding:1rem; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.06);">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.25rem; background:rgba(0,0,0,0.3); padding:1rem; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.06);">
           <div>
             <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Roast Profile</span>
-            <div style="font-weight:700; color:var(--crema-gold); font-size:0.9rem;">${item.roast}</div>
+            <div style="font-weight:700; color:var(--crema-gold); font-size:0.9rem;">
+              <a href="${getWikipediaUrl('Coffee Roasting')}" target="_blank" rel="noopener noreferrer" style="color:var(--crema-gold); text-decoration:none;">${item.roast} ↗</a>
+            </div>
           </div>
           <div>
             <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Caffeine / Cal</span>
-            <div style="font-weight:700; color:var(--crema-gold); font-size:0.9rem;">${item.caffeine} • ${item.calories}</div>
+            <div style="font-weight:700; color:var(--crema-gold); font-size:0.9rem;">
+              <a href="https://en.wikipedia.org/wiki/Caffeine" target="_blank" rel="noopener noreferrer" style="color:var(--crema-gold); text-decoration:none;">${item.caffeine}</a> • ${item.calories}
+            </div>
           </div>
         </div>
 
-        <div style="display:flex; gap:0.4rem; margin-bottom:2rem; flex-wrap:wrap;">
-          ${item.tags.map(t => `<span class="tag-pill" style="font-size:0.8rem; padding:0.25rem 0.65rem;">${t}</span>`).join('')}
+        <div style="margin-bottom:0.5rem; font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Click ingredient to open Wikipedia guide:</div>
+        <div style="display:flex; gap:0.4rem; margin-bottom:1.75rem; flex-wrap:wrap;">
+          ${item.tags.map(t => `
+            <a href="${getWikipediaUrl(t)}" target="_blank" rel="noopener noreferrer" class="tag-pill wiki-tag" style="font-size:0.8rem; padding:0.3rem 0.75rem;" title="Explore ${t} on Wikipedia">
+              ${t} <span class="wiki-arrow">↗</span>
+            </a>
+          `).join('')}
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08);">
@@ -486,12 +619,12 @@ window.openQuickView = function(productId) {
   elements.modalOverlay.classList.add('open');
 };
 
-window.closeQuickView = function() {
+window.closeQuickView = function () {
   elements.quickViewModal.classList.remove('open');
   elements.modalOverlay.classList.remove('open');
 };
 
-// --- INTERACTIVE BREW LAB LIVE CUP CUSTOMIZER ---
+// --- ULTRA-MODERN ARTISAN BREW LAB WORKSTATION ENGINE ---
 function setupBrewLabInteractions() {
   const baseChips = document.querySelectorAll('[data-lab-base]');
   const milkChips = document.querySelectorAll('[data-lab-milk]');
@@ -504,33 +637,41 @@ function setupBrewLabInteractions() {
   const cupLayerSyrup = document.getElementById('cup-layer-syrup');
   const cupLayerFoam = document.getElementById('cup-layer-foam');
   const iceGroup = document.getElementById('ice-cubes-group');
+  const steamGroup = document.getElementById('steam-lab-group');
   const customDrinkPrice = document.getElementById('custom-drink-price');
   const customDrinkTitle = document.getElementById('custom-drink-title');
   const customDrinkTags = document.getElementById('custom-drink-tags');
 
-  // Base options mapping
+  // Sensory Radar Meters
+  const meterBody = document.getElementById('meter-body');
+  const meterSweetness = document.getElementById('meter-sweetness');
+  const meterAcidity = document.getElementById('meter-acidity');
+  const meterCaffeine = document.getElementById('meter-caffeine');
+  const meterCalories = document.getElementById('meter-calories');
+
+  // Base options mapping with sensory profile and Wikipedia links
   const baseMap = {
-    espresso: { name: 'Double Espresso Base', color: '#2e1609', price: 4.50, height: '40%' },
-    coldbrew: { name: 'Nitro Cold Brew Base', color: '#1a0d06', price: 5.00, height: '50%' },
-    matcha: { name: 'Ceremonial Matcha Base', color: '#4f772d', price: 5.25, height: '40%' },
-    blonde: { name: 'Blonde Cinnamon Roast', color: '#6f4e37', price: 4.75, height: '38%' }
+    espresso: { name: 'Signature Double Espresso', color: '#240f06', price: 4.50, height: '42%', acidity: 35, body: 90, sweetness: 35, caffeine: 150, calories: 5, wiki: 'https://en.wikipedia.org/wiki/Espresso' },
+    coldbrew: { name: 'Nitro Amber Cold Brew', color: '#160803', price: 5.00, height: '52%', acidity: 15, body: 80, sweetness: 50, caffeine: 210, calories: 10, wiki: 'https://en.wikipedia.org/wiki/Nitro_cold_brew' },
+    matcha: { name: 'Ceremonial Uji Matcha', color: '#3d611e', price: 5.25, height: '42%', acidity: 20, body: 65, sweetness: 45, caffeine: 70, calories: 35, wiki: 'https://en.wikipedia.org/wiki/Matcha' },
+    blonde: { name: 'Blonde Cinnamon Roast', color: '#6f4e37', price: 4.75, height: '40%', acidity: 85, body: 45, sweetness: 65, caffeine: 180, calories: 2, wiki: 'https://en.wikipedia.org/wiki/Coffeemaker#Drip_brew' }
   };
 
   // Milk options mapping
   const milkMap = {
-    oat: { name: 'Silky Oat Milk', color: '#f3e8d6', height: '30%', price: 0.75 },
-    almond: { name: 'Almond Breeze', color: '#f7f1e5', height: '28%', price: 0.75 },
-    whole: { name: 'Organic Whole Milk', color: '#ffffff', height: '32%', price: 0.50 },
-    none: { name: 'No Milk (Pure Black)', color: 'transparent', height: '0%', price: 0.00 }
+    oat: { name: 'Silky Oat Milk', color: '#f3e8d6', height: '32%', price: 0.75, calories: 120, sweetness: 25, body: 20, wiki: 'https://en.wikipedia.org/wiki/Oat_milk' },
+    almond: { name: 'Almond Breeze Milk', color: '#f7f1e5', height: '28%', price: 0.75, calories: 60, sweetness: 15, body: 10, wiki: 'https://en.wikipedia.org/wiki/Almond_milk' },
+    whole: { name: 'Organic Whole Milk', color: '#ffffff', height: '34%', price: 0.50, calories: 150, sweetness: 20, body: 25, wiki: 'https://en.wikipedia.org/wiki/Milk' },
+    none: { name: 'Pure Black (Zero Milk)', color: 'transparent', height: '0%', price: 0.00, calories: 0, sweetness: 0, body: 0, wiki: 'https://en.wikipedia.org/wiki/Black_coffee' }
   };
 
   // Syrup options mapping
   const syrupMap = {
-    vanilla: { name: 'Madagascar Vanilla', color: '#d4a373', price: 0.60, height: '15%' },
-    caramel: { name: 'Salted Butter Caramel', color: '#a0522d', price: 0.75, height: '18%' },
-    berry: { name: 'Wild Crimson Raspberry', color: '#9b1d20', price: 0.85, height: '15%' },
-    hazelnut: { name: 'Roasted Hazelnut', color: '#6e473b', price: 0.65, height: '16%' },
-    none: { name: 'Sugar Free / Pure', color: 'transparent', price: 0.00, height: '0%' }
+    vanilla: { name: 'Madagascar Vanilla', color: '#d4a373', price: 0.60, height: '14%', calories: 50, sweetness: 40, wiki: 'https://en.wikipedia.org/wiki/Vanilla' },
+    caramel: { name: 'Salted Butter Caramel', color: '#a0522d', price: 0.75, height: '16%', calories: 65, sweetness: 50, wiki: 'https://en.wikipedia.org/wiki/Caramel' },
+    berry: { name: 'Wild Crimson Raspberry', color: '#9b1d20', price: 0.85, height: '14%', calories: 55, sweetness: 45, wiki: 'https://en.wikipedia.org/wiki/Raspberry' },
+    hazelnut: { name: 'Toasted Hazelnut', color: '#6e473b', price: 0.65, height: '15%', calories: 60, sweetness: 35, wiki: 'https://en.wikipedia.org/wiki/Hazelnut' },
+    none: { name: 'Unsweetened Pure', color: 'transparent', price: 0.00, height: '0%', calories: 0, sweetness: 0, wiki: 'https://en.wikipedia.org/wiki/Coffee' }
   };
 
   function updateCupVisuals() {
@@ -555,15 +696,34 @@ function setupBrewLabInteractions() {
       if (isIced) iceGroup.classList.add('active');
       else iceGroup.classList.remove('active');
     }
+    if (steamGroup) {
+      if (!isIced) steamGroup.classList.add('active');
+      else steamGroup.classList.remove('active');
+    }
 
     const totalCustomPrice = baseInfo.price + milkInfo.price + syrupInfo.price;
+    const totalCalories = baseInfo.calories + milkInfo.calories + syrupInfo.calories;
+    const totalBody = Math.min(100, baseInfo.body + milkInfo.body);
+    const totalSweetness = Math.min(100, baseInfo.sweetness + milkInfo.sweetness + syrupInfo.sweetness);
+    const totalAcidity = isIced ? Math.max(10, baseInfo.acidity - 15) : baseInfo.acidity;
+
     if (customDrinkPrice) customDrinkPrice.textContent = `$${totalCustomPrice.toFixed(2)}`;
     if (customDrinkTitle) {
-      customDrinkTitle.textContent = `${isIced ? 'Iced ' : 'Hot '}${syrupInfo.name !== 'Sugar Free / Pure' ? syrupInfo.name.split(' ')[0] + ' ' : ''}${baseInfo.name.replace(' Base', '')}`;
+      customDrinkTitle.textContent = `${isIced ? 'Iced ' : 'Hot '}${syrupInfo.name !== 'Unsweetened Pure' ? syrupInfo.name.split(' ')[0] + ' ' : ''}${baseInfo.name.replace('Signature ', '').replace('Ceremonial ', '')}`;
     }
     if (customDrinkTags) {
-      customDrinkTags.textContent = `${milkInfo.name} • ${state.brewLab.topping.toUpperCase()} TOPPING`;
+      customDrinkTags.innerHTML = `
+        <a href="${milkInfo.wiki}" target="_blank" rel="noopener noreferrer" class="wiki-lab-link">${milkInfo.name} ↗</a> • 
+        <span>${state.brewLab.topping.toUpperCase()} TOPPING</span>
+      `;
     }
+
+    // Update Sensory Profile Meters
+    if (meterBody) meterBody.style.width = `${totalBody}%`;
+    if (meterSweetness) meterSweetness.style.width = `${totalSweetness}%`;
+    if (meterAcidity) meterAcidity.style.width = `${totalAcidity}%`;
+    if (meterCaffeine) meterCaffeine.textContent = `${baseInfo.caffeine}mg`;
+    if (meterCalories) meterCalories.textContent = `~${totalCalories} kcal`;
   }
 
   function handleChipSelection(chips, groupKey) {
@@ -594,13 +754,13 @@ function setupBrewLabInteractions() {
 
       const customProduct = {
         id: `custom-${Date.now()}`,
-        name: `${isIced ? 'Iced ' : 'Crafted '}${baseInfo.name.replace(' Base', '')}`,
+        name: `${isIced ? 'Iced ' : 'Crafted '}${baseInfo.name.replace('Signature ', '')}`,
         price: price,
-        image: state.brewLab.base === 'matcha' 
+        image: state.brewLab.base === 'matcha'
           ? 'assets/images/ceremonial_matcha_latte.jpg'
-          : (isIced 
-              ? 'assets/images/iced_caramel_macchiato.jpg'
-              : 'assets/images/hero_artisan_espresso.jpg'),
+          : (isIced
+            ? 'assets/images/iced_caramel_macchiato.jpg'
+            : 'assets/images/hero_artisan_espresso.jpg'),
         details: `${milkInfo.name} + ${syrupInfo.name}`
       };
 
@@ -695,36 +855,80 @@ function setupHeroDrinkSwitcher() {
       if (heroTitle) heroTitle.textContent = data.name;
       if (heroPrice) heroPrice.textContent = data.price;
       if (heroNotes) {
-        heroNotes.innerHTML = data.notes.map(n => `<span>${n}</span>`).join('');
+        heroNotes.innerHTML = data.notes.map(n => `
+          <a href="${getWikipediaUrl(n)}" target="_blank" rel="noopener noreferrer" class="wiki-tag" title="Learn about ${n} on Wikipedia">
+            ${n} ↗
+          </a>
+        `).join('');
       }
     });
   });
 }
 
-// --- LOYALTY STAMP CARD SIMULATOR ---
-function setupLoyaltyCard() {
-  const stampSlots = document.querySelectorAll('.stamp-slot');
-  const stampProgressText = document.getElementById('stamp-progress-count');
+// --- TABLE RESERVATION & LUXURY ZONE SELECTOR ---
+function setupTableReservation() {
+  const zonePills = document.querySelectorAll('.seat-pill');
+  const zoneTitle = document.getElementById('zone-status-title');
+  const zoneDesc = document.getElementById('zone-status-desc');
+  const zoneBadge = document.getElementById('zone-status-badge');
 
-  stampSlots.forEach((slot, idx) => {
-    slot.addEventListener('click', () => {
-      slot.classList.toggle('stamped');
-      const totalActive = document.querySelectorAll('.stamp-slot.stamped').length;
-      if (stampProgressText) stampProgressText.textContent = totalActive;
+  const zoneData = {
+    window: {
+      title: 'Window Sunshine Booth',
+      desc: 'Bathed in soft natural sunlight overlooking the tree-lined street. Ideal for morning espresso, conversation, and reading.',
+      badge: 'Available Now (4 Booths)'
+    },
+    bar: {
+      title: 'Barista Tasting Counter',
+      desc: 'Front-row view of our La Marzocco espresso machines, pour-over drips, and live barista craftsmanship with complimentary cupping tastes.',
+      badge: 'High Energy • 6 Stools'
+    },
+    patio: {
+      title: 'Patio Garden Nook',
+      desc: 'Fresh open-air botanical garden setting with lush ferns, ambient heaters, and acoustic background soundscapes.',
+      badge: 'Open Air • 5 Tables'
+    },
+    vip: {
+      title: 'Velvet VIP Lounge',
+      desc: 'Intimate semi-private plush leather booths equipped with charging outlets, dedicated sommelier service, and dim ambient glow.',
+      badge: 'Exclusive • 2 Suites'
+    }
+  };
 
-      if (totalActive === 6) {
-        triggerConfetti();
-        showToast('🎉 CONGRATULATIONS! You unlocked a Free Artisan Brew reward voucher!');
-      } else {
-        showToast(`Stamp collected! ${6 - totalActive} more until your free brew.`);
+  zonePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      zonePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const zoneKey = pill.dataset.zone || 'window';
+      state.selectedZone = zoneKey;
+
+      const data = zoneData[zoneKey];
+      if (data && zoneTitle && zoneDesc) {
+        zoneTitle.textContent = data.title;
+        zoneDesc.textContent = data.desc;
+        if (zoneBadge) zoneBadge.textContent = data.badge;
       }
     });
   });
 }
 
-// --- WEB AUDIO API COFFEEHOUSE LOFI VIBE SONG ENGINE ---
+// --- ARTISAN CUPPING FLIGHTS & MASTERCLASSES ---
+function setupTastingFlights() {
+  const flightCards = document.querySelectorAll('.flight-action-btn');
+  flightCards.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const flightName = e.target.dataset.flight || 'Single Origin Tasting Flight';
+      triggerConfetti();
+      showToast(`🎟️ Reserved spot for "${flightName}"! Confirmation email dispatched.`);
+    });
+  });
+}
+
+// --- WEB AUDIO API "ORDINARY" BY ALEX WARREN (ACOUSTIC PIANO AMBIENCE) ---
 let musicInterval = null;
 let activeAudioNodes = [];
+let trackTimerInterval = null;
+let trackElapsedSeconds = 0;
 
 function setupAudioAmbiance() {
   if (!elements.audioToggleBtn) return;
@@ -739,7 +943,8 @@ function setupAudioAmbiance() {
       stopCafeMusic();
       state.audioPlaying = false;
       elements.audioToggleBtn.classList.remove('playing');
-      showToast('Ambient cafe song paused.');
+      syncAmbienceLoungeUI(false);
+      showToast('"Ordinary" (Alex Warren) paused.');
     } else {
       if (state.audioContext.state === 'suspended') {
         state.audioContext.resume();
@@ -747,9 +952,51 @@ function setupAudioAmbiance() {
       startCafeMusic(state.audioContext);
       state.audioPlaying = true;
       elements.audioToggleBtn.classList.add('playing');
-      showToast('🎵 Playing relaxing coffeehouse vibe song.');
+      syncAmbienceLoungeUI(true);
+      showToast('🎵 Now Playing: "Ordinary" by Alex Warren (Acoustic Piano Ambience)');
     }
   });
+}
+
+function syncAmbienceLoungeUI(isPlaying) {
+  const vinylDisc = document.getElementById('vinyl-disc');
+  const tonearm = document.getElementById('tonearm');
+  const statusText = document.getElementById('player-status-text');
+  const playIcon = document.getElementById('lounge-play-icon');
+  const eqDisplay = document.querySelector('.player-equalizer-display');
+  const timeDisplay = document.getElementById('eq-time-current');
+
+  if (isPlaying) {
+    if (vinylDisc) vinylDisc.classList.add('playing');
+    if (tonearm) tonearm.classList.add('playing');
+    if (eqDisplay) eqDisplay.classList.add('playing');
+    if (statusText) statusText.textContent = 'Now Playing • Alex Warren';
+    if (playIcon) {
+      playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+    }
+    if (!trackTimerInterval) {
+      trackTimerInterval = setInterval(() => {
+        trackElapsedSeconds = (trackElapsedSeconds + 1) % 215; // 3:35 duration
+        const mins = Math.floor(trackElapsedSeconds / 60);
+        const secs = trackElapsedSeconds % 60;
+        if (timeDisplay) {
+          timeDisplay.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+      }, 1000);
+    }
+  } else {
+    if (vinylDisc) vinylDisc.classList.remove('playing');
+    if (tonearm) tonearm.classList.remove('playing');
+    if (eqDisplay) eqDisplay.classList.remove('playing');
+    if (statusText) statusText.textContent = 'Paused • Alex Warren';
+    if (playIcon) {
+      playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+    }
+    if (trackTimerInterval) {
+      clearInterval(trackTimerInterval);
+      trackTimerInterval = null;
+    }
+  }
 }
 
 function stopCafeMusic() {
@@ -757,11 +1004,15 @@ function stopCafeMusic() {
     clearInterval(musicInterval);
     musicInterval = null;
   }
+  if (trackTimerInterval) {
+    clearInterval(trackTimerInterval);
+    trackTimerInterval = null;
+  }
   activeAudioNodes.forEach(node => {
     try {
       if (node.stop) node.stop();
       if (node.disconnect) node.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   });
   activeAudioNodes = [];
 }
@@ -769,19 +1020,18 @@ function stopCafeMusic() {
 function startCafeMusic(ctx) {
   stopCafeMusic();
 
-  // Master Gain & Reverb Filter
   const masterGain = ctx.createGain();
-  masterGain.gain.setValueAtTime(0.18, ctx.currentTime);
+  masterGain.gain.setValueAtTime(0.22, ctx.currentTime);
   masterGain.connect(ctx.destination);
   activeAudioNodes.push(masterGain);
 
-  // 1. Vinyl Warmth & Ambient Cafe Atmosphere Layer
+  // 1. Vinyl Warmth & Ambient Cafe Room Sound Layer
   const bufferSize = ctx.sampleRate * 2;
   const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = noiseBuffer.getChannelData(0);
   for (let i = 0; i < bufferSize; i++) {
-    const crackle = Math.random() < 0.003 ? (Math.random() * 2 - 1) * 0.4 : 0;
-    data[i] = ((Math.random() * 2 - 1) * 0.03) + crackle;
+    const crackle = Math.random() < 0.002 ? (Math.random() * 2 - 1) * 0.3 : 0;
+    data[i] = ((Math.random() * 2 - 1) * 0.02) + crackle;
   }
   const vinylSource = ctx.createBufferSource();
   vinylSource.buffer = noiseBuffer;
@@ -789,27 +1039,30 @@ function startCafeMusic(ctx) {
 
   const vinylFilter = ctx.createBiquadFilter();
   vinylFilter.type = 'lowpass';
-  vinylFilter.frequency.value = 600;
+  vinylFilter.frequency.value = 520;
 
   vinylSource.connect(vinylFilter);
   vinylFilter.connect(masterGain);
   vinylSource.start();
   activeAudioNodes.push(vinylSource);
 
-  // 2. Chords Progression for Chill Coffee Vibe
-  // Frequencies for Cmaj9, Am9, Dm9, G13 chords
-  const chordProgression = [
-    { name: 'Cmaj9', bass: 130.81, notes: [261.63, 329.63, 392.00, 493.88, 587.33] }, // C3, C4, E4, G4, B4, D5
-    { name: 'Am9',   bass: 110.00, notes: [220.00, 261.63, 329.63, 392.00, 493.88] }, // A2, A3, C4, E4, G4, B4
-    { name: 'Dm9',   bass: 146.83, notes: [293.66, 349.23, 440.00, 523.25, 659.25] }, // D3, D4, F4, A4, C5, E5
-    { name: 'G13',   bass: 98.00,  notes: [196.00, 246.94, 329.63, 392.00, 440.00] }  // G2, G3, B3, E4, G4, A4
+  // 2. Alex Warren - "Ordinary" Iconic Acoustic Piano Ballad Chords & Melody (Key of D Major / Bm / G / A)
+  const alexWarrenOrdinary = [
+    { name: 'D Major', bass: 73.42, notes: [146.83, 185.00, 220.00, 293.66, 369.99], lead: [369.99, 329.63, 293.66, 369.99] }, // F#4, E4, D4, F#4
+    { name: 'A/C#', bass: 69.30, notes: [138.59, 164.81, 220.00, 277.18, 329.63], lead: [329.63, 293.66, 277.18, 293.66] }, // E4, D4, C#4, D4
+    { name: 'B Minor 7', bass: 61.74, notes: [123.47, 146.83, 185.00, 220.00, 293.66], lead: [293.66, 329.63, 369.99, 440.00] }, // D4, E4, F#4, A4
+    { name: 'G Major add9', bass: 49.00, notes: [98.00, 146.83, 196.00, 246.94, 293.66], lead: [369.99, 329.63, 293.66, 246.94] }, // F#4, E4, D4, B3
+    { name: 'D Major (Hook)', bass: 73.42, notes: [146.83, 220.00, 293.66, 369.99, 440.00], lead: [440.00, 369.99, 329.63, 293.66] }, // A4, F#4, E4, D4 ("I don't wanna be ordinary")
+    { name: 'A Major', bass: 55.00, notes: [110.00, 164.81, 220.00, 277.18, 329.63], lead: [329.63, 369.99, 329.63, 293.66] }, // E4, F#4, E4, D4
+    { name: 'G Major', bass: 49.00, notes: [98.00, 146.83, 196.00, 246.94, 293.66], lead: [246.94, 293.66, 329.63, 293.66] }, // B3, D4, E4, D4
+    { name: 'Asus4 -> A', bass: 55.00, notes: [110.00, 146.83, 220.00, 293.66, 329.63], lead: [293.66, 277.18, 293.66, 369.99] }  // D4, C#4, D4, F#4
   ];
 
   let chordIndex = 0;
-  const chordDuration = 3.2; // seconds per chord (~75 BPM)
+  const chordDuration = 3.5; // ~72 BPM soulful acoustic ballad tempo
 
   function playChord(chord, startTime) {
-    // Warm Electric Piano / Rhodes Synth
+    // Warm Acoustic Piano Hammer & Resonance
     chord.notes.forEach((freq, idx) => {
       const osc = ctx.createOscillator();
       const osc2 = ctx.createOscillator();
@@ -819,16 +1072,17 @@ function startCafeMusic(ctx) {
       osc.type = 'triangle';
       osc2.type = 'sine';
       osc.frequency.setValueAtTime(freq, startTime);
-      osc2.frequency.setValueAtTime(freq * 1.002, startTime); // Subtle chorus detune
+      osc2.frequency.setValueAtTime(freq * 1.0015, startTime); // Natural acoustic piano detune
 
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(800, startTime);
-      filter.frequency.exponentialRampToValueAtTime(350, startTime + chordDuration);
+      filter.frequency.setValueAtTime(1000, startTime);
+      filter.frequency.exponentialRampToValueAtTime(340, startTime + chordDuration);
 
-      const noteVelocity = 0.08 / (idx + 1);
-      gain.gain.setValueAtTime(0.0001, startTime + idx * 0.04);
-      gain.gain.exponentialRampToValueAtTime(noteVelocity, startTime + idx * 0.04 + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + chordDuration - 0.1);
+      const noteVelocity = 0.10 / (idx + 1);
+      const noteDelay = startTime + idx * 0.045;
+      gain.gain.setValueAtTime(0.0001, noteDelay);
+      gain.gain.exponentialRampToValueAtTime(noteVelocity, noteDelay + 0.035);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + chordDuration - 0.12);
 
       osc.connect(filter);
       osc2.connect(filter);
@@ -841,7 +1095,7 @@ function startCafeMusic(ctx) {
       osc2.stop(startTime + chordDuration);
     });
 
-    // Warm Low-End Bass Note
+    // Warm Low-End Upright Bass Note
     const bassOsc = ctx.createOscillator();
     const bassGain = ctx.createGain();
     const bassFilter = ctx.createBiquadFilter();
@@ -850,10 +1104,10 @@ function startCafeMusic(ctx) {
     bassOsc.frequency.setValueAtTime(chord.bass, startTime);
 
     bassFilter.type = 'lowpass';
-    bassFilter.frequency.value = 220;
+    bassFilter.frequency.value = 180;
 
     bassGain.gain.setValueAtTime(0.001, startTime);
-    bassGain.gain.linearRampToValueAtTime(0.22, startTime + 0.08);
+    bassGain.gain.linearRampToValueAtTime(0.25, startTime + 0.05);
     bassGain.gain.exponentialRampToValueAtTime(0.0001, startTime + chordDuration - 0.2);
 
     bassOsc.connect(bassFilter);
@@ -863,36 +1117,40 @@ function startCafeMusic(ctx) {
     bassOsc.start(startTime);
     bassOsc.stop(startTime + chordDuration);
 
-    // Sparkly Melodic Kalimba notes
-    const melodyNotes = [chord.notes[3] * 1.5, chord.notes[2] * 2, chord.notes[4]];
-    melodyNotes.forEach((mFreq, mIdx) => {
-      const mTime = startTime + 0.8 + (mIdx * 0.7);
-      const mOsc = ctx.createOscillator();
-      const mGain = ctx.createGain();
+    // Alex Warren "Ordinary" Signature Melody Notes
+    if (chord.lead) {
+      chord.lead.forEach((mFreq, mIdx) => {
+        const mTime = startTime + 0.75 + (mIdx * 0.70);
+        const mOsc = ctx.createOscillator();
+        const mGain = ctx.createGain();
+        const mFilter = ctx.createBiquadFilter();
 
-      mOsc.type = 'sine';
-      mOsc.frequency.setValueAtTime(mFreq, mTime);
+        mOsc.type = 'sine';
+        mOsc.frequency.setValueAtTime(mFreq, mTime);
 
-      mGain.gain.setValueAtTime(0.0001, mTime);
-      mGain.gain.exponentialRampToValueAtTime(0.04, mTime + 0.02);
-      mGain.gain.exponentialRampToValueAtTime(0.0001, mTime + 0.9);
+        mFilter.type = 'lowpass';
+        mFilter.frequency.value = 1400;
 
-      mOsc.connect(mGain);
-      mGain.connect(masterGain);
+        mGain.gain.setValueAtTime(0.0001, mTime);
+        mGain.gain.exponentialRampToValueAtTime(0.065, mTime + 0.025);
+        mGain.gain.exponentialRampToValueAtTime(0.0001, mTime + 0.95);
 
-      mOsc.start(mTime);
-      mOsc.stop(mTime + 1);
-    });
+        mOsc.connect(mFilter);
+        mFilter.connect(mGain);
+        mGain.connect(masterGain);
+
+        mOsc.start(mTime);
+        mOsc.stop(mTime + 1.0);
+      });
+    }
   }
 
-  // Initial trigger
-  playChord(chordProgression[0], ctx.currentTime + 0.05);
+  playChord(alexWarrenOrdinary[0], ctx.currentTime + 0.05);
 
-  // Recurring loop
   musicInterval = setInterval(() => {
     if (!state.audioPlaying) return;
-    chordIndex = (chordIndex + 1) % chordProgression.length;
-    playChord(chordProgression[chordIndex], ctx.currentTime + 0.05);
+    chordIndex = (chordIndex + 1) % alexWarrenOrdinary.length;
+    playChord(alexWarrenOrdinary[chordIndex], ctx.currentTime + 0.05);
   }, chordDuration * 1000);
 }
 
@@ -1079,7 +1337,7 @@ function setupEventListeners() {
     elements.tableReserveForm.addEventListener('submit', (e) => {
       e.preventDefault();
       triggerConfetti();
-      showToast('Table reserved successfully! A confirmation SMS has been dispatched.');
+      showToast('Table reserved successfully! A confirmation SMS and email have been dispatched.');
       elements.tableReserveForm.reset();
     });
   }
@@ -1107,19 +1365,10 @@ function setupEventListeners() {
     elements.newsletterForm.addEventListener('submit', (e) => {
       e.preventDefault();
       triggerConfetti();
-      showToast('Welcome to the Crimson Club! Check your inbox for a 15% welcome perk.');
+      showToast('Welcome to the Crimson Roastery Newsletter! Check your inbox for your 15% perk.');
       elements.newsletterForm.reset();
     });
   }
-
-  // Seat Selector Pills
-  const seatPills = document.querySelectorAll('.seat-pill');
-  seatPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      seatPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-    });
-  });
 
   // Mobile Menu Toggle
   const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
@@ -1128,7 +1377,7 @@ function setupEventListeners() {
   }
 }
 
-window.resetSearch = function() {
+window.resetSearch = function () {
   state.searchQuery = '';
   state.activeCategory = 'all';
   if (elements.searchInput) elements.searchInput.value = '';
