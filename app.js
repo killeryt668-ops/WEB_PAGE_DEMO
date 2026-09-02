@@ -929,33 +929,148 @@ let musicInterval = null;
 let activeAudioNodes = [];
 let trackTimerInterval = null;
 let trackElapsedSeconds = 0;
+let isUserSeeking = false;
 
 function setupAudioAmbiance() {
-  if (!elements.audioToggleBtn) return;
+  const bgAudio = document.getElementById('ambience-audio-file');
+  const seekSlider = document.getElementById('audio-seek-slider');
+  const volumeSlider = document.getElementById('audio-volume-slider');
+  const volumeBtn = document.getElementById('volume-toggle-btn');
+  const volIcon = document.getElementById('vol-icon');
+  const volLevelText = document.getElementById('vol-level-text');
+  const timeCurrent = document.getElementById('eq-time-current');
+  const timeDuration = document.getElementById('eq-time-duration');
 
-  elements.audioToggleBtn.addEventListener('click', () => {
-    if (!state.audioContext) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      state.audioContext = new AudioCtx();
-    }
+  if (bgAudio) {
+    bgAudio.volume = 0.8;
 
-    if (state.audioPlaying) {
-      stopCafeMusic();
-      state.audioPlaying = false;
-      elements.audioToggleBtn.classList.remove('playing');
-      syncAmbienceLoungeUI(false);
-      showToast('"Ordinary" (Alex Warren) paused.');
-    } else {
-      if (state.audioContext.state === 'suspended') {
-        state.audioContext.resume();
+    bgAudio.addEventListener('loadedmetadata', () => {
+      if (timeDuration && !isNaN(bgAudio.duration)) {
+        timeDuration.textContent = formatTime(bgAudio.duration);
       }
-      startCafeMusic(state.audioContext);
+    });
+
+    bgAudio.addEventListener('timeupdate', () => {
+      if (!isUserSeeking && !isNaN(bgAudio.duration) && bgAudio.duration > 0) {
+        const percent = (bgAudio.currentTime / bgAudio.duration) * 100;
+        if (seekSlider) seekSlider.value = percent;
+        if (timeCurrent) timeCurrent.textContent = formatTime(bgAudio.currentTime);
+        if (timeDuration) timeDuration.textContent = formatTime(bgAudio.duration);
+      }
+    });
+
+    bgAudio.addEventListener('play', () => {
       state.audioPlaying = true;
-      elements.audioToggleBtn.classList.add('playing');
+      if (elements.audioToggleBtn) elements.audioToggleBtn.classList.add('playing');
       syncAmbienceLoungeUI(true);
-      showToast('🎵 Now Playing: "Ordinary" by Alex Warren (Acoustic Piano Ambience)');
+    });
+
+    bgAudio.addEventListener('pause', () => {
+      state.audioPlaying = false;
+      if (elements.audioToggleBtn) elements.audioToggleBtn.classList.remove('playing');
+      syncAmbienceLoungeUI(false);
+    });
+
+    bgAudio.addEventListener('ended', () => {
+      bgAudio.currentTime = 0;
+      bgAudio.play().catch(() => {});
+    });
+  }
+
+  // Seek Slider interaction
+  if (seekSlider && bgAudio) {
+    seekSlider.addEventListener('mousedown', () => { isUserSeeking = true; });
+    seekSlider.addEventListener('touchstart', () => { isUserSeeking = true; });
+
+    seekSlider.addEventListener('input', (e) => {
+      if (!isNaN(bgAudio.duration) && bgAudio.duration > 0) {
+        const seekTime = (parseFloat(e.target.value) / 100) * bgAudio.duration;
+        if (timeCurrent) timeCurrent.textContent = formatTime(seekTime);
+      }
+    });
+
+    seekSlider.addEventListener('change', (e) => {
+      isUserSeeking = false;
+      if (!isNaN(bgAudio.duration) && bgAudio.duration > 0) {
+        bgAudio.currentTime = (parseFloat(e.target.value) / 100) * bgAudio.duration;
+      }
+    });
+  }
+
+  // Volume Slider interaction
+  if (volumeSlider && bgAudio) {
+    volumeSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      bgAudio.volume = val;
+      if (volLevelText) volLevelText.textContent = `${Math.round(val * 100)}%`;
+      if (volIcon) {
+        if (val === 0) volIcon.textContent = '🔇';
+        else if (val < 0.5) volIcon.textContent = '🔉';
+        else volIcon.textContent = '🔊';
+      }
+    });
+  }
+
+  // Volume Mute Button
+  if (volumeBtn && bgAudio) {
+    volumeBtn.addEventListener('click', () => {
+      bgAudio.muted = !bgAudio.muted;
+      if (volIcon) volIcon.textContent = bgAudio.muted ? '🔇' : (bgAudio.volume < 0.5 ? '🔉' : '🔊');
+      if (volLevelText) volLevelText.textContent = bgAudio.muted ? 'Muted' : `${Math.round(bgAudio.volume * 100)}%`;
+    });
+  }
+
+  // Main Toggle Button (Header & Global)
+  if (elements.audioToggleBtn) {
+    elements.audioToggleBtn.addEventListener('click', () => {
+      if (bgAudio) {
+        if (bgAudio.paused) {
+          bgAudio.play().then(() => {
+            showToast('🎵 Now Playing: "Ordinary" by Alex Warren (Coffeehouse Audio)');
+          }).catch(err => {
+            console.warn('Direct audio play failed, falling back to Web Audio Synth:', err);
+            startSynthFallback();
+          });
+        } else {
+          bgAudio.pause();
+          showToast('"Ordinary" (Alex Warren) paused.');
+        }
+      } else {
+        startSynthFallback();
+      }
+    });
+  }
+}
+
+function startSynthFallback() {
+  if (!state.audioContext) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    state.audioContext = new AudioCtx();
+  }
+
+  if (state.audioPlaying) {
+    stopCafeMusic();
+    state.audioPlaying = false;
+    if (elements.audioToggleBtn) elements.audioToggleBtn.classList.remove('playing');
+    syncAmbienceLoungeUI(false);
+    showToast('"Ordinary" (Alex Warren) paused.');
+  } else {
+    if (state.audioContext.state === 'suspended') {
+      state.audioContext.resume();
     }
-  });
+    startCafeMusic(state.audioContext);
+    state.audioPlaying = true;
+    if (elements.audioToggleBtn) elements.audioToggleBtn.classList.add('playing');
+    syncAmbienceLoungeUI(true);
+    showToast('🎵 Now Playing: "Ordinary" by Alex Warren (Acoustic Ambience)');
+  }
+}
+
+function formatTime(seconds) {
+  if (isNaN(seconds) || seconds < 0) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
 function syncAmbienceLoungeUI(isPlaying) {
@@ -964,7 +1079,6 @@ function syncAmbienceLoungeUI(isPlaying) {
   const statusText = document.getElementById('player-status-text');
   const playIcon = document.getElementById('lounge-play-icon');
   const eqDisplay = document.querySelector('.player-equalizer-display');
-  const timeDisplay = document.getElementById('eq-time-current');
 
   if (isPlaying) {
     if (vinylDisc) vinylDisc.classList.add('playing');
@@ -974,16 +1088,6 @@ function syncAmbienceLoungeUI(isPlaying) {
     if (playIcon) {
       playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
     }
-    if (!trackTimerInterval) {
-      trackTimerInterval = setInterval(() => {
-        trackElapsedSeconds = (trackElapsedSeconds + 1) % 215; // 3:35 duration
-        const mins = Math.floor(trackElapsedSeconds / 60);
-        const secs = trackElapsedSeconds % 60;
-        if (timeDisplay) {
-          timeDisplay.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-      }, 1000);
-    }
   } else {
     if (vinylDisc) vinylDisc.classList.remove('playing');
     if (tonearm) tonearm.classList.remove('playing');
@@ -991,10 +1095,6 @@ function syncAmbienceLoungeUI(isPlaying) {
     if (statusText) statusText.textContent = 'Paused • Alex Warren';
     if (playIcon) {
       playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-    }
-    if (trackTimerInterval) {
-      clearInterval(trackTimerInterval);
-      trackTimerInterval = null;
     }
   }
 }

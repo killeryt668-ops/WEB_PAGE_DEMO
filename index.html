@@ -568,6 +568,14 @@
 
         <!-- Right: Live Interactive Audio Player & Controls -->
         <div class="player-controls-side">
+          <!-- Hidden/Integrated HTML5 Background Audio Element -->
+          <audio id="ambience-audio-file" preload="metadata" loop>
+            <source src="assets/audio/ambience.mp3" type="audio/mpeg">
+            <source src="assets/audio/ambience.mp4" type="audio/mp4">
+            <source src="WhatsApp Audio 2026-09-02 at 12.19.53 AM.mp4" type="audio/mp4">
+            Your browser does not support the audio element.
+          </audio>
+
           <div class="player-equalizer-display">
             <div class="eq-bars-container" id="eq-visualizer-bars">
               <div class="eq-bar"></div>
@@ -583,41 +591,56 @@
               <div class="eq-bar"></div>
               <div class="eq-bar"></div>
             </div>
-            <div class="eq-time-display">
-              <span id="eq-time-current">0:00</span>
-              <span style="color:var(--crimson-light); font-weight:700;">Alex Warren — Ordinary</span>
-              <span>3:35</span>
+
+            <!-- Interactive Seek & Progress Bar -->
+            <div class="audio-scrubber-wrapper">
+              <input type="range" id="audio-seek-slider" min="0" max="100" value="0" step="0.1" class="audio-progress-bar" aria-label="Audio playback seek scrubber">
+              <div class="eq-time-display">
+                <span id="eq-time-current">0:00</span>
+                <span class="track-playing-label">Alex Warren — Ordinary</span>
+                <span id="eq-time-duration">--:--</span>
+              </div>
             </div>
           </div>
 
-          <!-- Main Play Controls -->
+          <!-- Main Play Controls & Volume Row -->
           <div class="player-button-row">
             <button id="lounge-play-btn" class="lounge-big-play-btn"
               onclick="document.getElementById('audio-toggle-btn').click();"
-              title="Play / Pause Ordinary by Alex Warren">
+              title="Play / Pause Ordinary by Alex Warren"
+              aria-label="Play or Pause ambient track">
               <svg id="lounge-play-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
               </svg>
             </button>
             <div class="lounge-track-meta">
-              <div style="font-weight:700; color:var(--text-pure); font-size:1.15rem;">"Ordinary" — Alex Warren</div>
-              <div style="font-size:0.85rem; color:var(--crema-gold);">Soulful Acoustic Ballad in D Major • 72 BPM</div>
+              <div style="font-weight:700; color:var(--text-pure); font-size:1.1rem;">"Ordinary" — Alex Warren</div>
+              <div style="font-size:0.82rem; color:var(--crema-gold);">Master Audio Track • High-Fidelity Coffeehouse Stream</div>
+            </div>
+
+            <!-- Volume Control -->
+            <div class="audio-volume-control">
+              <button id="volume-toggle-btn" class="volume-btn" title="Mute / Unmute" aria-label="Mute or Unmute audio">
+                <span id="vol-icon">🔊</span>
+              </button>
+              <input type="range" id="audio-volume-slider" min="0" max="1" step="0.01" value="0.8" class="volume-slider" aria-label="Volume slider">
+              <span id="vol-level-text">80%</span>
             </div>
           </div>
 
           <!-- Ambient Atmosphere Sound Layers -->
           <div class="ambience-sound-layers">
             <div class="layer-item active">
-              <span>🎹 Grand Piano Melody (Alex Warren)</span>
-              <small>Synthesizer Active</small>
+              <span>🎵 MP3 Studio Audio File</span>
+              <small>Master Stream Loaded</small>
             </div>
             <div class="layer-item active">
               <span>☕ Vinyl Motes & Room Warmth</span>
-              <small>Binaural Layer</small>
+              <small>Acoustic Ambience</small>
             </div>
             <div class="layer-item active">
-              <span>🎸 Acoustic Upright Bass Resonance</span>
-              <small>Low-End Warmth</small>
+              <span>🎹 Piano & Vocal Resonance</span>
+              <small>Alex Warren - Ordinary</small>
             </div>
           </div>
 
