@@ -370,6 +370,26 @@ function renderProducts() {
   }).join('');
 }
 
+// --- MOBILE HORIZONTAL SWIPE / SCROLL NAVIGATION ---
+window.scrollProductsGrid = function (direction) {
+  const grid = document.getElementById('products-grid');
+  if (grid) {
+    const scrollAmount = (grid.clientWidth * 0.75) * direction;
+    grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  }
+};
+
+window.toggleMenuLayoutMode = function () {
+  const grid = document.getElementById('products-grid');
+  const label = document.getElementById('layout-mode-label');
+  if (grid) {
+    grid.classList.toggle('grid-mode');
+    const isGrid = grid.classList.contains('grid-mode');
+    if (label) label.textContent = isGrid ? '▦ Grid View' : '⚡ Swipe View';
+    showToast(isGrid ? '📱 Switched to Vertical Grid View' : '👈 Switched to Horizontal Swipe View');
+  }
+};
+
 // --- CART STATE MANAGEMENT ---
 window.addToCart = function (productId, customItem = null) {
   let itemToAdd;

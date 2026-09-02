@@ -463,6 +463,20 @@
         </div>
       </div>
 
+      <!-- Mobile Items Horizontal Swipe Controls Bar -->
+      <div class="mobile-items-scroll-bar">
+        <div class="mobile-scroll-hint">
+          <span>👈 Swipe left to explore items</span>
+        </div>
+        <div class="mobile-layout-toggle-group">
+          <button id="menu-prev-btn" class="mobile-scroll-arrow-btn" onclick="scrollProductsGrid(-1)" title="Scroll Left" aria-label="Scroll products left">◀</button>
+          <button id="menu-layout-toggle" class="mobile-mode-pill" onclick="toggleMenuLayoutMode()" title="Toggle Horizontal Swipe vs Vertical Grid">
+            <span id="layout-mode-label">⚡ Swipe View</span>
+          </button>
+          <button id="menu-next-btn" class="mobile-scroll-arrow-btn" onclick="scrollProductsGrid(1)" title="Scroll Right" aria-label="Scroll products right">▶</button>
+        </div>
+      </div>
+
       <!-- Products Grid (Rendered via app.js) -->
       <div id="products-grid" class="products-grid">
         <!-- Dynamic JavaScript Cards with Wikipedia badges -->
